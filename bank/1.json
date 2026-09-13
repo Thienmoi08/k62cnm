@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "title": "Thu quỹ đoàn hội",
+  "accountName": "MAI DUC THIEN",
+  "accountNo": "6924042008",
+  "bank": "MB",
+  "amount": 120000,
+  "memoTemplate": "Quy Doan Hoi [MSSV] [TEN]",
+  "category": "Tien Quy",
+  "isHot": true,
+  "deadline": "2026-09-15T23:59:00+07:00"
+}

@@ -1,0 +1,12 @@
+{
+  "id": 2,
+  "title": "Quỹ Lớp",
+  "accountName": "HUA THI THUY DUONG",
+  "accountNo": "00368167869",
+  "bank": "MB",
+  "amount": 100000,
+  "memoTemplate": "[TEN] [MSSV] Dong quy lop",
+  "category": "Sự kiện",
+  "isHot": false,
+  "deadline": "2026-12-05T17:00:00+07:00"
+}
