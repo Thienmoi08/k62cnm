@@ -1,0 +1,12 @@
+{
+  "id": 3,
+  "title": "Tiền sách vật lí",
+  "accountName": "MAI DUC THIEN",
+  "accountNo": "0963076697",
+  "bank": "MB",
+  "amount": 40000,
+  "memoTemplate": "[TEN] [MSSV] Tien sach vat li",
+  "category": "Sự kiện",
+  "isHot": false,
+  "deadline": "2026-09-15T17:00:00+07:00"
+}
