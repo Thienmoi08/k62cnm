@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hệ Thống Kiến Thức & Phương Pháp Giải Đại Số Tuyến Tính</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="initKaTeX()"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.7)',
+                            200: 'rgba(255, 255, 255, 0.4)',
+                            border: 'rgba(255, 255, 255, 0.5)'
+                        }
+                    }
+                }
+            }
+        }
+
+        function initKaTeX() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false,
+                output: 'html' // Use HTML for better responsive behavior
+            });
+        }
+    </script>
+    
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            /* Animated gradient background for the liquid glass effect */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism utility classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.05);
+        }
+
+        /* Essential fix for Math equations on mobile */
+        .math-block { 
+            overflow-x: auto; 
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding: 1rem; 
+            background: rgba(255, 255, 255, 0.8); 
+            border-radius: 0.75rem; 
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            margin: 0.75rem 0;
+            width: 100%;
+        }
+        
+        /* Hide scrollbar for a cleaner look but keep functionality */
+        .math-block::-webkit-scrollbar { height: 6px; }
+        .math-block::-webkit-scrollbar-track { background: transparent; }
+        .math-block::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        /* KaTeX specific mobile fixes */
+        .katex-display {
+            margin: 0 !important; /* Remove default margin */
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* Timeline vertical line */
+        .timeline-line {
+            position: absolute;
+            left: 24px; /* Fixed position for mobile */
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: rgba(255, 255, 255, 0.5);
+            z-index: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .timeline-line { left: 2.5rem; } /* Adjust for desktop */
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden relative selection:bg-blue-300 selection:text-blue-900">
+
+    <header class="relative glass-panel border-b border-glass-border shadow-sm py-10 md:py-16 px-4 z-20 mb-8 rounded-b-[2.5rem]">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center px-4 py-1.5 bg-white/60 text-indigo-700 rounded-full mb-4 text-xs md:text-sm font-semibold tracking-wide border border-white/80 shadow-sm backdrop-blur-sm">
+                <i class="fa-solid fa-graduation-cap mr-2"></i> TÀI LIỆU ÔN THI ĐẠI HỌC
+            </div>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold text-slate-800 mb-4 md:mb-6 tracking-tight leading-tight">
+                Hệ Thống Kiến Thức<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-600">
+                    Đại Số Tuyến Tính
+                </span>
+            </h1>
+            <p class="text-base md:text-lg text-slate-700 font-medium max-w-2xl mx-auto px-2">
+                Tổng hợp toàn diện lý thuyết, định lý và phương pháp giải bài tập tối ưu dựa trên giáo trình chuẩn. Giao diện tối ưu hóa cho thiết bị di động.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-3 md:px-6 pb-16 relative">
+        <div class="timeline-line hidden md:block"></div>
+
+        <div class="space-y-8 md:space-y-12 relative z-10">
+            
+            <section class="relative md:pl-24 pl-10">
+                <div class="absolute left-0 md:left-6 top-6 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-indigo-500 to-blue-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg z-20 text-sm md:text-base border-2 border-white/50">1</div>
+                
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="bg-indigo-600/10 border-b border-white/40 px-5 md:px-8 py-4 backdrop-blur-md">
+                        <h2 class="text-lg md:text-xl font-bold text-indigo-900 flex items-center gap-2">
+                            <i class="fa-solid fa-border-all"></i> CHƯƠNG 1: MA TRẬN & CÁC PHÉP TOÁN
+                        </h2>
+                    </div>
+                    <div class="p-5 md:p-8 space-y-6">
+                        
+                        <div>
+                            <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3 border-l-4 border-indigo-500 pl-3">1. Nhận diện các loại ma trận đặc biệt</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 text-sm">
+                                <div class="glass-card p-4 rounded-xl">
+                                    <div class="font-semibold text-indigo-800 mb-1">Ma trận tam giác</div>
+                                    <p class="text-slate-700">Tam giác trên ($a_{ij}=0 \ \forall i>j$) và Tam giác dưới ($a_{ij}=0 \ \forall i<j$).</p>
+                                </div>
+                                <div class="glass-card p-4 rounded-xl">
+                                    <div class="font-semibold text-indigo-800 mb-1">Ma trận đường chéo</div>
+                                    <p class="text-slate-700">Mọi phần tử ngoài đường chéo chính đều bằng 0.</p>
+                                </div>
+                                <div class="glass-card p-4 rounded-xl">
+                                    <div class="font-semibold text-indigo-800 mb-1">Ma trận đơn vị ($E$ hoặc $I$)</div>
+                                    <p class="text-slate-700">Đường chéo chính bằng 1, còn lại bằng 0.</p>
+                                </div>
+                                <div class="glass-card p-4 rounded-xl">
+                                    <div class="font-semibold text-indigo-800 mb-1">Ma trận không ($\theta$)</div>
+                                    <p class="text-slate-700">Mọi phần tử đều bằng 0.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3 border-l-4 border-indigo-500 pl-3">2. Phép toán trên ma trận</h3>
+                            <div class="space-y-4">
+                                <div class="glass-card rounded-xl p-4 md:p-5">
+                                    <h4 class="font-bold text-slate-800 mb-2">a. Phép nhân ($AB = C$)</h4>
+                                    <ul class="list-disc pl-5 space-y-1.5 text-sm md:text-base text-slate-700">
+                                        <li><strong>Điều kiện:</strong> Số cột của $A$ = Số hàng của $B$. ($A_{m \times p} \cdot B_{p \times n} = C_{m \times n}$)</li>
+                                        <li><strong>Quy tắc:</strong> Nhân vô hướng Hàng $i$ của $A$ với Cột $j$ của $B$.</li>
+                                        <li class="text-red-700 font-semibold bg-red-100/50 p-1.5 rounded inline-block mt-1">LƯU Ý: Phép nhân KHÔNG có tính giao hoán ($AB \neq BA$).</li>
+                                    </ul>
+                                </div>
+                                <div class="glass-card rounded-xl p-4 md:p-5">
+                                    <h4 class="font-bold text-slate-800 mb-2">b. Ma trận chuyển vị ($A^t$)</h4>
+                                    <p class="text-sm md:text-base text-slate-700 mb-2">Đổi hàng thành cột. Tính chất cần nhớ:</p>
+                                    <div class="math-block">
+                                        $$ (A+B)^t = A^t + B^t \quad ; \quad (kA)^t = kA^t \quad ; \quad \mathbf{(AB)^t = B^t A^t} $$
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative md:pl-24 pl-10">
+                <div class="absolute left-0 md:left-6 top-6 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg z-20 text-sm md:text-base border-2 border-white/50">2</div>
+                
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="bg-teal-600/10 border-b border-white/40 px-5 md:px-8 py-4 backdrop-blur-md">
+                        <h2 class="text-lg md:text-xl font-bold text-teal-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> CHƯƠNG 2: ĐỊNH THỨC & BIẾN ĐỔI SƠ CẤP
+                        </h2>
+                    </div>
+                    <div class="p-5 md:p-8 space-y-6">
+                        
+                        <div>
+                            <h3 class="font-bold text-base md:text-lg text-slate-800 mb-2">1. Định nghĩa và Khai triển</h3>
+                            <div class="math-block text-sm md:text-base">
+                                <strong>Cấp 2:</strong> $\det(A) = a_{11}a_{22} - a_{12}a_{21}$<br><br>
+                                <strong>Cấp n (Khai triển Laplace theo hàng i):</strong> $\det(A) = \sum_{j=1}^n (-1)^{i+j} a_{ij} \det(M_{ij})$
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-base md:text-lg text-slate-800 mb-3">2. Tính chất cốt lõi của Định thức</h3>
+                            
+                            <!-- Responsive grid for properties -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                <div class="glass-card p-3 rounded-lg text-sm flex items-start gap-2 text-slate-700">
+                                    <i class="fa-solid fa-check text-teal-600 mt-1"></i> $\det(A^t) = \det(A)$
+                                </div>
+                                <div class="glass-card p-3 rounded-lg text-sm flex items-start gap-2 text-red-700 font-semibold bg-red-50/50">
+                                    <i class="fa-solid fa-triangle-exclamation mt-1"></i> $\det(kA) = k^n \det(A)$ (với A cấp n)
+                                </div>
+                                <div class="glass-card p-3 rounded-lg text-sm flex items-start gap-2 text-slate-700 md:col-span-2">
+                                    <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i> Định thức bằng 0 khi: Có hàng/cột toàn số 0; hoặc 2 hàng/cột giống nhau; hoặc 2 hàng/cột tỷ lệ nhau; hoặc 1 hàng là tổ hợp tuyến tính của các hàng khác.
+                                </div>
+                            </div>
+
+                            <div class="bg-amber-100/60 backdrop-blur-md border border-amber-200/80 p-4 md:p-5 rounded-xl">
+                                <h4 class="font-bold text-amber-900 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt"></i> Tác dụng của phép biến đổi sơ cấp
+                                </h4>
+                                <ul class="text-sm md:text-base space-y-2.5 text-amber-950">
+                                    <li><span class="font-bold">Đổi chỗ 2 hàng:</span> Định thức <strong>ĐỔI DẤU</strong> (thêm dấu trừ).</li>
+                                    <li><span class="font-bold">Nhân 1 hàng với $k$:</span> Định thức <strong>được nhân với $k$</strong> (rút nhân tử chung).</li>
+                                    <li><span class="font-bold">Cộng vào 1 hàng bội của hàng khác:</span> Định thức <strong>KHÔNG ĐỔI</strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="glass-card rounded-xl p-4 md:p-5 border-l-4 border-teal-500">
+                            <h3 class="font-bold text-teal-900 mb-2">3. Phương pháp tính tối ưu</h3>
+                            <p class="text-sm md:text-base text-slate-700">Dùng phép biến đổi loại 3 (cộng hàng) đưa định thức về dạng <strong>ma trận tam giác</strong>. Khi đó $\det(A)$ chính là tích các phần tử trên đường chéo chính: $\det = a_{11} \cdot a_{22} \dots a_{nn}$.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative md:pl-24 pl-10">
+                <div class="absolute left-0 md:left-6 top-6 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg z-20 text-sm md:text-base border-2 border-white/50">3</div>
+                
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="bg-orange-600/10 border-b border-white/40 px-5 md:px-8 py-4 backdrop-blur-md">
+                        <h2 class="text-lg md:text-xl font-bold text-orange-900 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-rotate"></i> CHƯƠNG 3: MA TRẬN NGHỊCH ĐẢO
+                        </h2>
+                    </div>
+                    <div class="p-5 md:p-8 space-y-6">
+                        
+                        <div class="glass-card p-4 rounded-xl">
+                            <p class="text-slate-800"><strong>Điều kiện tồn tại:</strong> Ma trận vuông $A$ khả nghịch $\Leftrightarrow \det(A) \neq 0$.</p>
+                            <p class="text-slate-800 mt-1"><strong>Định nghĩa:</strong> $AA^{-1} = A^{-1}A = E$.</p>
+                            <p class="text-red-700 font-bold mt-2">Định lý quan trọng: $(AB)^{-1} = B^{-1} A^{-1}$</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                            <div class="glass-card rounded-xl p-4 md:p-5">
+                                <h3 class="font-bold text-slate-800 mb-2">Cách 1: Dùng phần bù đại số</h3>
+                                <div class="math-block mb-3 bg-white/40">
+                                    $$A^{-1} = \frac{1}{\det(A)} C^t$$
+                                </div>
+                                <p class="text-sm text-slate-700">Trong đó $C$ là ma trận gồm các phần bù đại số $c_{ij} = (-1)^{i+j}\det(M_{ij})$. Nhớ bước chuyển vị $C$ thành $C^t$.</p>
+                            </div>
+                            
+                            <div class="glass-card rounded-xl p-4 md:p-5">
+                                <h3 class="font-bold text-slate-800 mb-2">Cách 2: Gauss - Jordan</h3>
+                                <div class="math-block mb-3 bg-white/40">
+                                    $$[A \mid E] \xrightarrow{\text{biến đổi}} [E \mid A^{-1}]$$
+                                </div>
+                                <p class="text-sm text-slate-700">Ghép ma trận $E$ bên phải $A$. Dùng biến đổi sơ cấp trên HÀNG biến đổi nửa trái thành $E$, khi đó nửa phải sẽ trở thành $A^{-1}$.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative md:pl-24 pl-10">
+                <div class="absolute left-0 md:left-6 top-6 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-rose-500 to-pink-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg z-20 text-sm md:text-base border-2 border-white/50">4</div>
+                
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="bg-rose-600/10 border-b border-white/40 px-5 md:px-8 py-4 backdrop-blur-md">
+                        <h2 class="text-lg md:text-xl font-bold text-rose-900 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol"></i> CHƯƠNG 4: HỆ PHƯƠNG TRÌNH TUYẾN TÍNH
+                        </h2>
+                    </div>
+                    <div class="p-5 md:p-8 space-y-6">
+                        
+                        <div class="glass-card p-4 rounded-xl mb-4">
+                            Dạng ma trận: $AX = B$. Ma trận bổ sung: $\bar{A} = [A \mid B]$
+                        </div>
+
+                        <!-- Cramer & Homogeneous -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="glass-card rounded-xl p-4 md:p-5 border-t-4 border-rose-400">
+                                <h3 class="font-bold text-slate-800 mb-2">1. Hệ Cramer</h3>
+                                <p class="text-xs text-slate-600 mb-2">Số PT = Số ẩn; $\det(A) \neq 0$</p>
+                                <div class="math-block text-center bg-white/40">
+                                    $$x_j = \frac{\det(A_j)}{\det(A)}$$
+                                </div>
+                                <p class="text-xs text-slate-600 mt-2">($A_j$: thay cột $j$ của A bằng cột B).</p>
+                            </div>
+                            
+                            <div class="glass-card rounded-xl p-4 md:p-5 border-t-4 border-rose-400">
+                                <h3 class="font-bold text-slate-800 mb-2">2. Hệ thuần nhất ($B=0$)</h3>
+                                <p class="text-sm text-slate-700 mb-2">Luôn có ít nhất 1 nghiệm tầm thường ($X=0$).</p>
+                                <p class="text-sm font-semibold text-rose-700 bg-rose-50/50 p-2 rounded">
+                                    Hệ có vô số nghiệm (nghiệm không tầm thường) $\Leftrightarrow \det(A) = 0$.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Kronecker - Capelli -->
+                        <div class="bg-white/60 rounded-xl p-4 md:p-6 border border-white shadow-sm">
+                            <h3 class="font-bold text-slate-800 mb-4 text-lg">3. Định lý Kronecker - Capelli (Biện luận tổng quát)</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-sm">
+                                <div class="glass-card p-4 rounded-lg flex flex-col justify-center">
+                                    <div class="text-red-600 font-bold mb-2">VÔ NGHIỆM</div>
+                                    <div class="math-block p-1 bg-transparent border-none shadow-none m-0">$\text{rank}(A) < \text{rank}(\bar{A})$</div>
+                                </div>
+                                <div class="glass-card p-4 rounded-lg flex flex-col justify-center">
+                                    <div class="text-emerald-600 font-bold mb-2">NGHIỆM DUY NHẤT</div>
+                                    <div class="math-block p-1 bg-transparent border-none shadow-none m-0">$\text{rank}(A) = \text{rank}(\bar{A}) = n$</div>
+                                </div>
+                                <div class="glass-card p-4 rounded-lg flex flex-col justify-center">
+                                    <div class="text-blue-600 font-bold mb-2">VÔ SỐ NGHIỆM</div>
+                                    <div class="math-block p-1 bg-transparent border-none shadow-none m-0">$\text{rank}(A) = \text{rank}(\bar{A}) < n$</div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-3 text-center">($n$ là số ẩn của hệ PT)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="relative md:pl-24 pl-10 mb-8">
+                <div class="absolute left-0 md:left-6 top-6 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg z-20 text-sm md:text-base border-2 border-white/50">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-xl" style="background: rgba(255, 255, 255, 0.75);">
+                    <div class="bg-violet-600 border-b border-violet-500 px-5 md:px-8 py-5">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            CHIẾN THUẬT & MẸO LÀM BÀI ĐIỂM CAO
+                        </h2>
+                    </div>
+                    <div class="p-5 md:p-8 space-y-5">
+                        
+                        <div class="bg-violet-50/80 rounded-xl p-4 md:p-5 border border-violet-200">
+                            <h3 class="font-bold text-violet-900 mb-3 text-base md:text-lg">🔥 Dạng bài biện luận tham số (Trang 19)</h3>
+                            <p class="text-sm text-slate-700 mb-3">Với hệ vuông n phương trình, n ẩn:</p>
+                            <ol class="space-y-3 text-sm md:text-base text-slate-800 list-decimal pl-5">
+                                <li><strong>Tính $\det(A)$</strong> ra biểu thức chứa tham số.</li>
+                                <li><strong>Điều kiện nghiệm duy nhất:</strong> Cho $\det(A) \neq 0$.</li>
+                                <li><strong>Xét trường hợp $\det(A) = 0$</strong> để tìm giá trị cụ thể của tham số.</li>
+                                <li>Thay giá trị vừa tìm vào ma trận bổ sung $\bar{A}$, dùng khử Gauss đưa về bậc thang.</li>
+                                <li>Nhìn hàng cuối cùng để kết luận Vô nghiệm hay Vô số nghiệm dựa vào Kronecker-Capelli.</li>
+                            </ol>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="glass-card rounded-xl p-4 border border-violet-200">
+                                <h4 class="font-bold text-violet-800 mb-2"><i class="fa-solid fa-lightbulb text-yellow-500 mr-1"></i> Mẹo khử Gauss không dùng phân số</h4>
+                                <p class="text-sm text-slate-700">Thay vì dùng $h_2 \rightarrow h_2 - \frac{3}{2}h_1$, hãy nhân chéo thành <strong>$h_2 \rightarrow 2h_2 - 3h_1$</strong>. Việc tính toán với số nguyên giúp hạn chế 90% lỗi sai dấu cơ bản.</p>
+                            </div>
+                            <div class="glass-card rounded-xl p-4 border border-violet-200">
+                                <h4 class="font-bold text-violet-800 mb-2"><i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> Mẹo check kết quả ma trận nghịch đảo</h4>
+                                <p class="text-sm text-slate-700">Sau khi tìm được $A^{-1}$, lấy nháp nhân thử hàng 1 của $A$ với cột 1 của $A^{-1}$. Nếu kết quả bằng 1 thì khả năng cao bạn làm đúng, nếu khác 1 thì chắc chắn đã sai (thường quên chia định thức hoặc quên chuyển vị $C^t$).</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="relative z-20 glass-panel py-6 text-center text-sm md:text-base text-slate-600 rounded-t-[2rem] mx-2">
+        <p class="mb-2 font-medium">Tài liệu ôn thi Đại Số Tuyến Tính - Giao diện Liquid Glass</p>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-indigo-600 hover:text-indigo-800 font-bold transition-colors mt-2 bg-white/50 px-4 py-2 rounded-full shadow-sm">
+            <i class="fa-solid fa-arrow-up mr-1"></i> Lên đầu trang
+        </button>
+    </footer>
+
+</body>
+</html>
